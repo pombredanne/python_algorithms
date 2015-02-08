@@ -53,7 +53,8 @@ class UF:
 
         id = self._id
         while p != id[p]:
-            p = id[p] = id[id[p]]   # Path compression using halving.
+            id[p] = id[id[p]]   # Path compression using halving.
+            p = id[p]
         return p
 
     def count(self):
