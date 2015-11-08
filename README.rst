@@ -3,8 +3,8 @@ Python Algorithms
 ===============================
 
 .. image:: https://badge.fury.io/py/python_algorithms.png
-    :target: http://badge.fury.io/py/python_algorithms
-    
+        :target: http://badge.fury.io/py/python_algorithms
+
 .. image:: https://travis-ci.org/mihassan/python_algorithms.png?branch=develop
         :target: https://travis-ci.org/mihassan/python_algorithms
 
@@ -49,7 +49,7 @@ Features
 Algorithms
 ----------
 
-Here is a list of algorithms divided into packages. 
+Here is a list of algorithms divided into packages.
 
 .. Note:: Not all of the algorithms have been fully implemented yet.
 

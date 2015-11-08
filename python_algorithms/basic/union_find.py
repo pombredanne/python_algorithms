@@ -31,6 +31,8 @@ complexity:
 
 """
 
+from collections import defaultdict
+
 
 class UF:
     """An implementation of union find data structure.
@@ -47,14 +49,33 @@ class UF:
         self._id = list(range(N))
         self._count = N
         self._rank = [0] * N
+        self._N = N
+        self._symbol_to_index = {}
+        self._index_to_symbol = {}
 
     def find(self, p):
         """Find the set identifier for the item p."""
 
+        # For integer items, try to preserve natural 0--N order if
+        # possible, even if the successive calls to find are not in
+        # that order
+        if isinstance(p, int) and p < self._N and \
+           p not in self._index_to_symbol:
+            self._symbol_to_index[p] = p
+            self._index_to_symbol[p] = p
+        else:
+            # Non-integer items (e.g. string)
+            self._symbol_to_index.setdefault(p, len(self._symbol_to_index))
+            self._index_to_symbol.setdefault(self._symbol_to_index[p], p)
+        i = self._symbol_to_index[p]
+        if i >= self._N:
+            raise IndexError('You have been exceeding the UF capacity')
+
         id = self._id
-        while p != id[p]:
-            p = id[p] = id[id[p]]   # Path compression using halving.
-        return p
+        while i != id[i]:
+            id[i] = id[id[i]]   # Path compression using halving.
+            i = id[i]
+        return i
 
     def count(self):
         """Return the number of items."""
@@ -85,6 +106,15 @@ class UF:
         else:
             id[j] = i
             rank[i] += 1
+
+    def get_components(self):
+        """List of symbol components (as sets)"""
+        d = defaultdict(set)
+        for i, j in enumerate(self._id):
+            d[self.find(self._index_to_symbol.get(j, j))].add(
+                self._index_to_symbol.get(i, i)
+            )
+        return list(d.values())
 
     def __str__(self):
         """String representation of the union find object."""
